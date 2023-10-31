@@ -81,6 +81,14 @@ function Teleprompter({ showNotification }) {
   const handleAboutClose = () => setShowAboutToast(false);
 
   useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.code === "Space") {
+        toggleScroll();
+      }
+    };
+  
+    window.addEventListener("keydown", handleKeyPress);
+
     const interval = setInterval(() => {
       if (teleprompterRef.current && shouldScroll) {
         setTop((prevTop) => prevTop - 1);
@@ -153,6 +161,7 @@ function Teleprompter({ showNotification }) {
       <Row>
         <Col className="flex-column">
           <Card
+            onClick={toggleScroll}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragEnter={handleDragEnter}
