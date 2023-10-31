@@ -13,7 +13,7 @@ import { BsQuestionCircle } from "react-icons/bs";
 
 function Teleprompter({ showNotification }) {
   const pauseResumeKey = "Space";
-  const defaultCaption = "Drag and drop a text file here.";
+  const defaultCaption = "Type, paste text, or drag and drop a text file here.";
   const defaultSpeed = 50;
   const defaultFontSize = 16;
   const [speed, setSpeed] = useState(
@@ -37,6 +37,9 @@ function Teleprompter({ showNotification }) {
         : "Disabled. Spacebar and mouse will pause/resume teleprompter scrolling.",
       "Edit mode"
     );
+    if (event.target.checked) {
+      setShouldScroll(false);
+    }
   };
 
   const handleTooltip = (show) => {
@@ -270,6 +273,7 @@ function Teleprompter({ showNotification }) {
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onChange={handleTextChange}
+            readOnly={!editMode}
             className="rounded px-2 py-1"
             style={{
               width: "100%",
