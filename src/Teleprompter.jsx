@@ -13,7 +13,6 @@ import { BsQuestionCircle } from "react-icons/bs";
 
 function Teleprompter({ showNotification }) {
   const pauseResumeKey = "Space";
-  const defaultCaption = "Type, paste text, or drag and drop a text file here.";
   const defaultSpeed = 50;
   const defaultFontSize = 16;
   const [speed, setSpeed] = useState(
@@ -34,7 +33,7 @@ function Teleprompter({ showNotification }) {
     showNotification(
       event.target.checked
         ? "Enabled. Spacebar and mouse will function normally."
-        : "Disabled. Spacebar and mouse will pause/resume teleprompter scrolling.",
+        : "Disabled. Spacebar and mouse will pause/resume scrolling.",
       "Edit mode"
     );
     if (event.target.checked) {
@@ -95,7 +94,7 @@ function Teleprompter({ showNotification }) {
 
   const toggleScroll = () => {
     const newVal =
-      teleprompterRef.current.value !== defaultCaption &&
+      teleprompterRef.current.value !== "" &&
       !shouldScroll &&
       !editMode;
     setShouldScroll(newVal);
@@ -179,7 +178,7 @@ function Teleprompter({ showNotification }) {
     localStorage.clear();
     setSpeed(defaultSpeed);
     setFontSize(defaultFontSize);
-    setTeleprompterText(defaultCaption);
+    setTeleprompterText("");
     teleprompterRef.current.scrollTop = 0;
     setShouldScroll(false);
     showNotification("App settings cleared.", "Success");
@@ -232,7 +231,7 @@ function Teleprompter({ showNotification }) {
           >
             {(props) => (
               <Tooltip id="tooltip" {...props}>
-                Disables scroll pause/resume on spacebar or mouse click.
+                Enable edit mode to prevent scrolling while making script changes.
               </Tooltip>
             )}
           </Overlay>
@@ -285,8 +284,9 @@ function Teleprompter({ showNotification }) {
               backgroundColor: "inherit",
               fontSize: `${fontSize}px`,
             }}
+            placeholder="Type, paste text, or drag and drop a text file here."
             defaultValue={
-              localStorage.getItem("teleprompterText") || defaultCaption
+              localStorage.getItem("teleprompterText") || ""
             }
           />
         </Col>
