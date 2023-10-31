@@ -8,7 +8,9 @@ function Notification({ show, onClose, message, caption }) {
       ? "bg-danger"
       : caption.toLowerCase().includes("warning")
       ? "bg-warning"
-      : "");
+      : caption.toLowerCase().includes("success")
+      ? "bg-success"
+      : "bg-primary");
   const textColorClass =
     caption && (caption.toLowerCase().includes("warning") ? "text-dark" : "");
 

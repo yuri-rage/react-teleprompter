@@ -22,7 +22,11 @@ function App() {
   return (
     <Container fluid>
       <Row>
-        <Teleprompter showNotification={showAppNotification} />
+        <Teleprompter
+          initSpeed={localStorage.getItem("speed")}
+          initFontSize={localStorage.getItem("fontSize")}
+          showNotification={showAppNotification}
+        />
       </Row>
       <Row className="justify-content-center fw-light fst-italic">
         All file content is processed solely on the client side. No data is
