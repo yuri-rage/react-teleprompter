@@ -11,15 +11,19 @@ import {
 } from "react-bootstrap";
 import { BsQuestionCircle } from "react-icons/bs";
 
-function Teleprompter({ showNotification }) {
+function Teleprompter({ availableFonts, showNotification }) {
   const pauseResumeKey = "Space";
   const defaultSpeed = 50;
   const defaultFontSize = 16;
+  const defaultFont = "sans-serif";
   const [speed, setSpeed] = useState(
     localStorage.getItem("speed") || defaultSpeed
   );
   const [fontSize, setFontSize] = useState(
     localStorage.getItem("fontSize") || defaultFontSize
+  );
+  const [selectedFont, setSelectedFont] = useState(
+    localStorage.getItem("font") || defaultFont
   );
   const [shouldScroll, setShouldScroll] = useState(false);
   const [highlightBorder, setHighlightBorder] = useState(false);
@@ -94,9 +98,7 @@ function Teleprompter({ showNotification }) {
 
   const toggleScroll = () => {
     const newVal =
-      teleprompterRef.current.value !== "" &&
-      !shouldScroll &&
-      !editMode;
+      teleprompterRef.current.value !== "" && !shouldScroll && !editMode;
     setShouldScroll(newVal);
     if (newVal) {
       setShowAboutToast(false);
@@ -119,6 +121,11 @@ function Teleprompter({ showNotification }) {
   const handleFontSizeChange = (e) => {
     localStorage.setItem("fontSize", e.target.value);
     setFontSize(e.target.value);
+  };
+
+  const handleFontChange = (e) => {
+    localStorage.setItem("font", e.target.value);
+    setSelectedFont(e.target.value);
   };
 
   const handleAboutClose = () => {
@@ -188,10 +195,10 @@ function Teleprompter({ showNotification }) {
     <Container fluid>
       <Row className="p-2">
         <Col xs="auto" className="justify-content-left">
-          <Button onClick={toggleScroll} className="mx-2">
+          <Button onClick={toggleScroll} className="m-2">
             {shouldScroll ? "Stop" : "Start"}
           </Button>
-          <Button onClick={resetScroll} className="mx-2">
+          <Button onClick={resetScroll} className="m-2">
             Reset
           </Button>
         </Col>
@@ -219,6 +226,19 @@ function Teleprompter({ showNotification }) {
             step={0.5}
           />
         </Col>
+        <Col xs="auto" className="mx-0 my-2 text-center">
+          <Form.Select value={selectedFont} onChange={handleFontChange}>
+            <option value="sans-serif">Sans-Serif</option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Fixed Width</option>
+            <option disabled >----</option>
+            {Array.from(availableFonts).map((font, index) => (
+              <option key={index} value={font}>
+                {font}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
         <Col
           className="text-center"
           onMouseEnter={() => handleTooltip(true)}
@@ -231,7 +251,8 @@ function Teleprompter({ showNotification }) {
           >
             {(props) => (
               <Tooltip id="tooltip" {...props}>
-                Enable edit mode to prevent scrolling while making script changes.
+                Enable edit mode to prevent scrolling while making script
+                changes.
               </Tooltip>
             )}
           </Overlay>
@@ -283,11 +304,10 @@ function Teleprompter({ showNotification }) {
               outline: "none",
               backgroundColor: "inherit",
               fontSize: `${fontSize}px`,
+              fontFamily: selectedFont,
             }}
             placeholder="Type, paste text, or drag and drop a text file here."
-            defaultValue={
-              localStorage.getItem("teleprompterText") || ""
-            }
+            defaultValue={localStorage.getItem("teleprompterText") || ""}
           />
         </Col>
       </Row>

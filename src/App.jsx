@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Container, Row } from "react-bootstrap";
+import { getAvailableFonts } from './fontChecker';
 import Teleprompter from "./Teleprompter";
 import Notification from "./Notification";
+
+const availableFonts = getAvailableFonts();
 
 function App() {
   const [showNotification, setShowNotification] = useState(false);
@@ -23,8 +26,7 @@ function App() {
     <Container fluid>
       <Row>
         <Teleprompter
-          initSpeed={localStorage.getItem("speed")}
-          initFontSize={localStorage.getItem("fontSize")}
+          availableFonts={availableFonts}
           showNotification={showAppNotification}
         />
       </Row>
